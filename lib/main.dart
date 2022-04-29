@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    // インスタンスを作成するときは予期しないバグを防ぐためProvider.valueを使わない。
     return ChangeNotifierProvider(
       create: (ctx) => Products(),
       child: MaterialApp(
