@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shop_cart/screens/cart_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'screens/products_overview_screen.dart';
 import 'screens/product_detail_screen.dart';
+import 'screens/cart_screen.dart';
 import 'providers/products.dart';
+import 'providers/cart.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,9 +16,17 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    // インスタンスを作成するときは予期しないバグを防ぐためProvider.valueを使わない。
-    return ChangeNotifierProvider(
-      create: (ctx) => Products(),
+    // 複数のプロバイダーを作成したいとき
+    return MultiProvider(
+      providers: [
+        // インスタンスを作成するときは予期しないバグを防ぐためProvider.valueを使わない。
+        ChangeNotifierProvider(
+          create: (ctx) => Products(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => Cart(),
+        ),
+      ],
       child: MaterialApp(
         title: 'MyShop',
         // References: https://api.flutter.dev/flutter/material/ThemeData-class.html
@@ -25,11 +36,13 @@ class MyApp extends StatelessWidget {
           ).copyWith(
             secondary: Colors.deepOrange,
           ),
+          textTheme: const TextTheme(titleLarge: TextStyle(color: Colors.white)),
           fontFamily: 'Lato',
         ),
-        home: ProductsOverviewScreen(),
+        home: const ProductsOverviewScreen(),
         routes: {
-          ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
+          ProductDetailScreen.routeName: (ctx) => const ProductDetailScreen(),
+          CartScreen.routeName: (ctx) => const CartScreen(),
         },
       ),
     );
